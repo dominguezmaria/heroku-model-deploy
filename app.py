@@ -16,7 +16,7 @@ from playhouse.db_url import connect
 # Begin database stuff
 
 # http://docs.peewee-orm.com/en/latest/peewee/database.html#connecting-using-a-database-url
-DB = connect(os.environ.get('DATABASE_URL') or 'predictions.db')
+DB = connect(os.environ.get('DATABASE_URL') or 'sqlite:///predictions.db')
 
 class Prediction(Model):
     observation_id = IntegerField(unique=True)
