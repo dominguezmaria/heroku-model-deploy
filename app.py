@@ -9,28 +9,14 @@ from peewee import (
     FloatField, TextField, IntegrityError
 )
 from playhouse.shortcuts import model_to_dict
+from playhouse.db_url import connect
 
 
 ########################################
 # Begin database stuff
 
-if 'DATABASE_URL' in os.environ:
-    db_url = os.environ['DATABASE_URL']
-    dbname = db_url.split('@')[1].split('/')[1]
-    user = db_url.split('@')[0].split(':')[1].lstrip('//')
-    password = db_url.split('@')[0].split(':')[2]
-    host = db_url.split('@')[1].split('/')[0].split(':')[0]
-    port = db_url.split('@')[1].split('/')[0].split(':')[1]
-    DB = PostgresqlDatabase(
-        dbname,
-        user=user,
-        password=password,
-        host=host,
-        port=port,
-    )
-else:
-    DB = SqliteDatabase('predictions.db')
-
+# http://docs.peewee-orm.com/en/latest/peewee/database.html#connecting-using-a-database-url
+DB = connect(os.environ.get('DATABASE_URL') or 'predictions.db')
 
 class Prediction(Model):
     observation_id = IntegerField(unique=True)
